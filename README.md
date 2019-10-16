@@ -25,9 +25,17 @@ URL должны обрабатываться параллельно, но не 
 
 * Simple run: go test ./...
 
+go test ./... -v (show prints)
+
 * Show cover: go test -cover ./...
+
+* Show full cover: go test ./... -coverprofile cover.out; go tool cover -func cover.out
 
 * To html: go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out
 
+Покрытие: 95.8%
+
 #### Run benchmarks
+
+
          

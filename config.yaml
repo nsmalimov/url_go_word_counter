@@ -1,2 +1,0 @@
-log_level: debug
-max_count_goroutines: 5

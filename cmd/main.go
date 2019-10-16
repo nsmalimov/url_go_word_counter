@@ -1,35 +1,22 @@
 package main
 
 import (
-	"bufio"
-	"log"
-	"os"
-
-	"url_go_word_counter/config"
-	"url_go_word_counter/processor"
+	"url_go_word_counter/internal/config"
+	"url_go_word_counter/internal/processor"
+	"url_go_word_counter/internal/stdin_parser"
 )
 
 func main() {
 	cfg := &config.Config{
-		MaxCountGoroutines: 5,
+		MaxCountGoroutines:       5,
+		TimeOutGetSiteContentSec: 2,
 	}
 
-	var urls []string
+	stdInParser := stdin_parser.StdInParser{}
+	stdInParser.ReadStdIn()
 
-	scanner := bufio.NewScanner(os.Stdin)
-	for scanner.Scan() {
-		urls = append(urls, scanner.Text())
-	}
+	prc := processor.New(cfg, nil)
+	prc.Init()
 
-	if scanner.Err() != nil {
-		log.Fatalf("Error when try read from input[main], err: %s", scanner.Err())
-	}
-
-	prc := processor.New(cfg)
-
-	err := prc.Processing(urls)
-
-	if err != nil {
-		log.Fatal("Error when try prc.GetSitesByUrls[main], err: %s", err)
-	}
+	prc.Processing(stdInParser.Urls)
 }
