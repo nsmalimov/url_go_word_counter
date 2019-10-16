@@ -163,16 +163,16 @@ func (t *processor) close() {
 func (t *processor) showResult(urls []string) {
 	var total int
 
-	t.resByUrls.Range(func(url, count interface{}) bool {
-		if count == -1 {
-			log.Printf("While try read data from: %s, something was wrong (http error [timeout, not found, etc ..])", url)
-		} else {
-			fmt.Printf("Count for %s: %d\n", url, count)
-			total += count.(int)
+	for _, url := range urls {
+		if count, ok := t.resByUrls.Load(url); ok {
+			if count == -1 {
+				log.Printf("While try read data from: %s, something was wrong (http error [timeout, not found, etc ..])", url)
+			} else {
+				fmt.Printf("Count for %s: %d\n", url, count)
+				total += count.(int)
+			}
 		}
-
-		return true
-	})
+	}
 
 	fmt.Printf("Total: %d\n", total)
 }

@@ -5,6 +5,7 @@ import (
 	"sync"
 	"testing"
 	"time"
+
 	"url_go_word_counter/internal/config"
 )
 
